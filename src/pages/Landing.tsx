@@ -9,6 +9,7 @@ const Landing = () => {
         display: "flex",
         flexDirection: "column",
         flexWrap: "nowrap",
+        width: "100vw",
         height: "100vh",
       }}
     >
