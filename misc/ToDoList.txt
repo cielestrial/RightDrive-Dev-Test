@@ -1,0 +1,15 @@
+Completed:
+1 - setup project
+2 - basic layout & styling
+3 - aria
+4 - write & run tests
+
+To do:
+5 - add more components 
+6 - aria
+7 - test components
+8 - styling & animations
+9 - jump to 5
+
+Things to utilize:
+- crypto api (bitquery api) ?
