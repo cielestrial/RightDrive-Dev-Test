@@ -1,13 +1,17 @@
-import { Route, Routes } from "react-router-dom";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Provider } from "react-redux";
 import Landing from "./pages/Landing";
+import store from "./utils/store";
 
-function App() {
+const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/RightDrive-Dev-Test/" element={<Landing />} />
-    </Routes>
+    <>
+      <CssBaseline />
+      <Provider store={store}>
+        <Landing />
+      </Provider>
+    </>
   );
-}
+};
 
 export default App;

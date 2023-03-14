@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { reducer } from "./page";
+import { myCardsReducer } from "./myCards";
+import { pageReducer } from "./page";
 
 const store = configureStore({
   reducer: {
-    pageIndex: reducer,
+    page: pageReducer,
+    myCards: myCardsReducer,
   },
 });
 
