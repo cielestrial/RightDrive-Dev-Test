@@ -1,0 +1,48 @@
+{
+  "name": "rightdrive-dev-test",
+  "private": true,
+  "homepage": "https://cielestrial.github.io/RightDrive-Dev-Test/",
+  "version": "1.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host --port 3000",
+    "build": "tsc && vite build",
+    "preview": "yarn build && vite preview",
+    "format": "prettier --write **/*.{ts,tsx,cjs}",
+    "predeploy": "yarn build --base=/RightDrive-Dev-Test/",
+    "deploy": "gh-pages -d dist",
+    "test": "vitest",
+    "coverage": "vitest run --coverage && ./coverage/index.html"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.12",
+    "@reduxjs/toolkit": "^1.9.3",
+    "axios": "^1.3.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react": "^3.1.0",
+    "@vitest/coverage-istanbul": "^0.29.2",
+    "gh-pages": "^4.0.0",
+    "jsdom": "^21.1.0",
+    "prettier": "^2.8.1",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0",
+    "vitest": "^0.29.2"
+  },
+  "browserslist": [
+    "defaults and supports es6-module",
+    "maintained node versions"
+  ]
+}
