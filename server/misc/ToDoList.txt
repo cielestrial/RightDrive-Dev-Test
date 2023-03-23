@@ -1,5 +1,8 @@
 Completed:
+- Dummy data added for testing
+- Redis cache implemented 
+- Time To Live for data implemented
+
 To do:
-8 - redis server cache (24 hours),
 9 - convert to serverless implemention,
 10 - migrate to netlify? 

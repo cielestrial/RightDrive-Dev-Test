@@ -45,6 +45,18 @@ const MyCard = (props: propsType) => {
           {props.id + 4 * index > loadCounter ? (
             <Skeleton animation="wave" />
           ) : (
+            "Close: " +
+            (content === undefined
+              ? ""
+              : content.priceDetails?.close +
+                " " +
+                content.priceDetails?.currency)
+          )}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          {props.id + 4 * index > loadCounter ? (
+            <Skeleton animation="wave" />
+          ) : (
             "High: " +
             (content === undefined
               ? ""
@@ -61,18 +73,6 @@ const MyCard = (props: propsType) => {
             (content === undefined
               ? ""
               : content.priceDetails?.low +
-                " " +
-                content.priceDetails?.currency)
-          )}
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          {props.id + 4 * index > loadCounter ? (
-            <Skeleton animation="wave" />
-          ) : (
-            "Close: " +
-            (content === undefined
-              ? ""
-              : content.priceDetails?.close +
                 " " +
                 content.priceDetails?.currency)
           )}
