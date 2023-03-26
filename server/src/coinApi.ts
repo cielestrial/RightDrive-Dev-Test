@@ -1,4 +1,4 @@
-import axios from "axios";
+import dotenv from "dotenv";
 import { NextFunction, Request, Response } from "express";
 import { Redis } from "ioredis";
 import {
@@ -14,8 +14,8 @@ import {
   sleepFor,
 } from "./dummyData";
 
+dotenv.config();
 const server = "https://api.coinpaprika.com/v1/";
-const url = "192.168.2.18";
 
 export type coin = {
   id: string;
@@ -35,7 +35,12 @@ export type priceDetails = {
   currency?: "USD";
 };
 
-const redis = new Redis({ port: 6379, host: url });
+const redis = new Redis({
+  port: 14019,
+  host: process.env.REDIS_URL,
+  username: process.env.REDIS_USERNAME,
+  password: process.env.REDIS_PASSWORD,
+});
 /**
  * Clears redis cache
  */
