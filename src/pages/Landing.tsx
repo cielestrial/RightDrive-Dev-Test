@@ -8,7 +8,7 @@ import {
 } from "../api/coinApi";
 import CardArea from "../components/CardGrid";
 import Pagination from "../components/MyPagination";
-import { keyboardNav, sleep } from "../utils/helperFunctions";
+import { keyboardNav } from "../utils/helperFunctions";
 import { myCardsActions } from "../utils/myCards";
 import { useAppDispatch } from "../utils/store";
 
@@ -30,15 +30,17 @@ const Landing = () => {
         for (let cardId = 1; cardId <= 4; cardId++) {
           rank = cardId + multiplier;
 
-          url = await getLogo(coins[rank].id);
-          //await sleep();
-          if (url !== undefined)
-            dispatch(myCardsActions.setLogo({ rank, url }));
+          if (coins[rank]?.id !== undefined) {
+            url = await getLogo(coins[rank].id);
+            //await sleep();
+            if (url !== undefined)
+              dispatch(myCardsActions.setLogo({ rank, url }));
 
-          priceDetails = await getPriceDetails(coins[rank].id);
-          //await sleep();
-          if (priceDetails !== undefined)
-            dispatch(myCardsActions.setPriceDetails({ rank, priceDetails }));
+            priceDetails = await getPriceDetails(coins[rank].id);
+            //await sleep();
+            if (priceDetails !== undefined)
+              dispatch(myCardsActions.setPriceDetails({ rank, priceDetails }));
+          }
         }
         dispatch(myCardsActions.incrementLoadCounter());
       }

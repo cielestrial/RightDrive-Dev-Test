@@ -1,0 +1,3 @@
+Completed:
+ convert to serverless implemention,
+ migrate to netlify

@@ -1,7 +1,10 @@
 import axios from "axios";
 import { handleErrors, HttpCode, responseType } from "./apiErrors";
 
-const server = "http://localhost:8080/";
+const base = "http://localhost:8888";
+const netlify = "/.netlify/functions";
+const myFunction = "/api";
+const server = base + netlify + myFunction;
 
 export type coin = {
   id: string;
@@ -23,7 +26,7 @@ export type priceDetails = {
 
 export async function getCoins() {
   try {
-    const res = await axios.get(server + "coins");
+    const res = await axios.get(server + "/coins");
     const data = res.data as responseType;
     if (data.status === HttpCode.OK) return data.coins;
     else handleErrors(data);
@@ -35,7 +38,7 @@ export async function getCoins() {
 
 export async function getLogo(coin_id: string) {
   try {
-    const res = await axios.post(server + "logo", { coin_id });
+    const res = await axios.post(server + "/logo", { coin_id });
     const data = res.data as responseType;
     if (data.status === HttpCode.OK) return data.logo;
     else handleErrors(data, coin_id);
@@ -50,7 +53,7 @@ export async function getLogo(coin_id: string) {
 
 export async function getPriceDetails(coin_id: string) {
   try {
-    const res = await axios.post(server + "price", { coin_id });
+    const res = await axios.post(server + "/price", { coin_id });
     const data = res.data as responseType;
     if (data.status === HttpCode.OK) return data.priceDetails;
     else handleErrors(data, coin_id);

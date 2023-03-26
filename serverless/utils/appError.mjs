@@ -1,38 +1,27 @@
 import { AxiosError } from "axios";
-import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import { ReplyError } from "ioredis";
 
-export let retryAfterDateTime: number = new Date().getTime();
+export let retryAfterDateTime = new Date().getTime();
 
-export enum HttpCode {
-  OK = 200,
-  NO_CONTENT = 204,
-  BAD_REQUEST = 400,
-  UNAUTHORIZED = 401,
-  PAYMENT_REQUIRED = 402,
-  NOT_FOUND = 404,
-  TOO_MANY_REQUESTS = 429,
-  INTERNAL_SERVER_ERROR = 500,
-}
-
-type errorMessage = {
-  error: string;
+export const HttpCode = {
+  OK: 200,
+  NO_CONTENT: 204,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  PAYMENT_REQUIRED: 402,
+  NOT_FOUND: 404,
+  TOO_MANY_REQUESTS: 429,
+  INTERNAL_SERVER_ERROR: 500,
 };
-
-interface AppErrorArgs {
-  httpCode: HttpCode;
-  description: string;
-  retryAfter?: string;
-}
 
 /**
  * httpCode, description, retryAfter?, toString
  */
 export class AppError extends Error {
-  public readonly httpCode: HttpCode;
-  public readonly description: string;
-  public readonly retryAfter: number = 0;
-  public toString = () => {
+  httpCode;
+  description;
+  retryAfter = 0;
+  toString = () => {
     let output = "";
     output += "status: " + this.httpCode + "\n";
     output += "description: " + this.description + "\n";
@@ -40,7 +29,7 @@ export class AppError extends Error {
     return output;
   };
 
-  constructor(args: AppErrorArgs) {
+  constructor(args) {
     super(args.description);
 
     this.httpCode = args.httpCode;
@@ -57,18 +46,13 @@ export class AppError extends Error {
 /**
  * Handle all errors
  */
-export const handleErrors: ErrorRequestHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const handleErrors = (err, req, res, next) => {
   if (err instanceof AxiosError) {
     const errRes = err.response;
     if (errRes !== undefined) {
       const newAppError = new AppError({
         httpCode: errRes.status,
-        description: (errRes.data as errorMessage).error,
+        description: errRes.data.error,
         retryAfter: errRes.headers["retry-after"],
       });
       console.error(newAppError.toString());
@@ -84,12 +68,7 @@ export const handleErrors: ErrorRequestHandler = (
  * Sends error details to client.
  * Handles error codes 404 and 429.
  */
-const sendErrors: ErrorRequestHandler = (
-  err: AppError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const sendErrors = (err, req, res, next) => {
   if (err.httpCode === HttpCode.NOT_FOUND) {
     res
       .status(HttpCode.OK)
@@ -119,7 +98,7 @@ const sendErrors: ErrorRequestHandler = (
  * @param retryHeader Seconds to wait or a date.
  * @returns number, milliseconds to wait.
  */
-function toMilliseconds(retryHeader: string): number {
+function toMilliseconds(retryHeader) {
   const minWaitTime = 3000;
   let waitTime = Math.ceil(parseFloat(retryHeader) * 1000);
   if (isNaN(waitTime)) {
@@ -136,11 +115,7 @@ function toMilliseconds(retryHeader: string): number {
 /**
  * Sends updated wait time to client.
  */
-export function sendUpdatedWaitTime(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function sendUpdatedWaitTime(req, res, next) {
   const currDateTime = new Date().getTime();
   const timeDiff = retryAfterDateTime - currDateTime;
   if (timeDiff > 0) {

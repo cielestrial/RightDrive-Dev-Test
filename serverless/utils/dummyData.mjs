@@ -1,20 +1,18 @@
-import { coin, priceDetails } from "./coinApi";
-
 /**
  * Holds up execution of code.
  * @param waitTime Time to sleep for, in milliseconds.
  * @returns a void Promise.
  */
-export function sleepFor(waitTime: number) {
-  return new Promise<void>((resolve) => setTimeout(resolve, waitTime));
+export function sleepFor(waitTime) {
+  return new Promise((resolve) => setTimeout(resolve, waitTime));
 }
 
 /**
  * Creates dummy coin data.
  * @returns coin[].
  */
-export function getDummyCoins(): coin[] {
-  const coins: coin[] = [];
+export function getDummyCoins() {
+  const coins = [];
   for (let i = 1; i <= 40; i++) {
     coins[i - 1] = {
       id: "dummyCoin" + i,
@@ -30,7 +28,7 @@ export function getDummyCoins(): coin[] {
  * Creates dummy priceDetails data.
  * @returns priceDetails object.
  */
-export function getDummyPriceDetails(): priceDetails {
+export function getDummyPriceDetails() {
   return {
     open: 200,
     high: 400,
@@ -44,6 +42,6 @@ export function getDummyPriceDetails(): priceDetails {
  * Creates dummy logo data.
  * @returns url string.
  */
-export function getDummyLogo(): string {
+export function getDummyLogo() {
   return "https://static.coinpaprika.com/coin/bnb-binance-coin/logo.png";
 }

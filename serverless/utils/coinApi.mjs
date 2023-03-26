@@ -1,39 +1,20 @@
 import dotenv from "dotenv";
-import { NextFunction, Request, Response } from "express";
 import { Redis } from "ioredis";
 import {
   handleErrors,
   HttpCode,
   retryAfterDateTime,
   sendUpdatedWaitTime,
-} from "./appError";
+} from "./appError.mjs";
 import {
   getDummyCoins,
   getDummyLogo,
   getDummyPriceDetails,
   sleepFor,
-} from "./dummyData";
+} from "./dummyData.mjs";
 
 dotenv.config();
 const server = "https://api.coinpaprika.com/v1/";
-
-export type coin = {
-  id: string;
-  name: string;
-  rank: number;
-  symbol: string;
-  logo?: string;
-  priceDetails?: priceDetails;
-};
-
-export type priceDetails = {
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  volume: number;
-  currency?: "USD";
-};
 
 const redis = new Redis({
   port: 14019,
@@ -69,7 +50,7 @@ async function newDay() {
  * Checks if application is waiting for Coinpaprika's Retry-After period to end.
  * @returns True, if not waiting for Retry-After. False, otherwise
  */
-function canRequest(): boolean {
+function canRequest() {
   const currDateTime = new Date().getTime();
   const timeDiff = retryAfterDateTime - currDateTime;
 
@@ -81,13 +62,9 @@ function canRequest(): boolean {
  * Sends information on the top 40 coins to the client.
  * @returns coin[] as json object.
  */
-export async function getCoins(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function getCoins(req, res, next) {
   const primaryKey = "COINS";
-  let coins: coin[] | undefined;
+  let coins;
   const date = new Date();
   const expiryDate = new Date(
     date.getFullYear(),
@@ -105,7 +82,7 @@ export async function getCoins(
       coins = result.data.slice(0, 40) as coin[];
       */
       await sleepFor(1000);
-      coins = getDummyCoins().slice(0, 40) as coin[];
+      coins = getDummyCoins().slice(0, 40);
       console.log("Data retrieved from Coinpaprika api");
       await redis.set(primaryKey, JSON.stringify(coins), "PXAT", expiryDate);
     } else sendUpdatedWaitTime(req, res, next);
@@ -124,11 +101,11 @@ export async function getCoins(
  * @param req coin_id.
  * @returns logo as json object.
  */
-export async function getLogo(req: Request, res: Response, next: NextFunction) {
-  const coin_id: string = req.body.coin_id;
+export async function getLogo(req, res, next) {
+  const coin_id = req.body.coin_id;
   const key = "COINS";
-  let coins: coin[];
-  let logo: string | undefined;
+  let coins;
+  let logo;
 
   try {
     const cachedResult = await redis.get(key);
@@ -166,16 +143,12 @@ export async function getLogo(req: Request, res: Response, next: NextFunction) {
  * @param req coin_id.
  * @returns priceDetails as json object.
  */
-export async function getPriceDetails(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const coin_id: string = req.body.coin_id;
+export async function getPriceDetails(req, res, next) {
+  const coin_id = req.body.coin_id;
   const key = "COINS";
   const dateKey = "TOMORROW";
-  let coins: coin[];
-  let priceDetails: priceDetails | undefined;
+  let coins;
+  let priceDetails;
   const date = new Date();
   const expiryDate = new Date(
     date.getFullYear(),
@@ -201,7 +174,7 @@ export async function getPriceDetails(
         priceDetails = result.data as priceDetails;
         */
         await sleepFor(300);
-        priceDetails = getDummyPriceDetails() as priceDetails;
+        priceDetails = getDummyPriceDetails();
         priceDetails.currency = "USD";
         coins[index].priceDetails = priceDetails;
         await redis.set(key, JSON.stringify(coins), "KEEPTTL");
