@@ -1,5 +1,6 @@
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import Link from "@mui/material/Link";
 import Snackbar from "@mui/material/Snackbar";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -30,13 +31,21 @@ const MyAlert = (props: propsType) => {
   return (
     <Snackbar
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      autoHideDuration={props.retryAfter.current}
-      open={open}
+      //autoHideDuration={props.retryAfter.current}
+      open={true} //open
       onClose={handleClose}
     >
       <Alert onClose={handleClose} severity="warning" sx={{ width: "100%" }}>
         <AlertTitle>Warning</AlertTitle>
-        {alertMessage}
+        <Link
+          color="inherit"
+          href="https://status.coingecko.com"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          CoinGecko's public API is currently under a DDOS attack.
+        </Link>
+        {/*alertMessage*/ "\nSorry for the inconvenience."}
       </Alert>
     </Snackbar>
   );
