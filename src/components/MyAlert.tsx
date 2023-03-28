@@ -45,7 +45,9 @@ const MyAlert = (props: propsType) => {
         >
           CoinGecko's public API is currently under a DDOS attack.
         </Link>
-        {/*alertMessage*/ "\nSorry for the inconvenience."}
+        <br />
+        Sorry for any inconveniences.
+        {/*alertMessage*/}
       </Alert>
     </Snackbar>
   );
