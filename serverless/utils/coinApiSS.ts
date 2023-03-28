@@ -28,8 +28,6 @@ const redis = new Redis({
   password: process.env.REDIS_PASSWORD,
 });
 
-console.log(process.env.REDIS_USERNAME);
-
 const apiServer = "https://api.coingecko.com/api/v3";
 
 /**
