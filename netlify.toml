@@ -1,0 +1,11 @@
+[build]
+  base = "/"
+  publish = "dist"
+  command = "yarn build"
+  functions = "serverless"
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+[dev]
+  targetPort = 3000

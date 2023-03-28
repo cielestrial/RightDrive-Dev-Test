@@ -1,0 +1,6 @@
+Completed:
+ - Switched to CoinGecko API from Coinpaprika API
+ - Cleaned up API related code 
+ - Added color separation to UI
+ - Rate limiting handled client side
+ - Added 2 retries on failed attempt to get coin data
