@@ -31,12 +31,13 @@ const MyAlert = (props: propsType) => {
   return (
     <Snackbar
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      //autoHideDuration={props.retryAfter.current}
-      open={true} //open
+      autoHideDuration={props.retryAfter.current}
+      open={open} //open or true
       onClose={handleClose}
     >
       <Alert onClose={handleClose} severity="warning" sx={{ width: "100%" }}>
         <AlertTitle>Warning</AlertTitle>
+        {/*
         <Link
           color="inherit"
           href="https://status.coingecko.com"
@@ -46,8 +47,9 @@ const MyAlert = (props: propsType) => {
           CoinGecko's public API is currently under a DDOS attack.
         </Link>
         <br />
-        Sorry for any inconveniences.
-        {/*alertMessage*/}
+         Sorry for any inconveniences.
+        */}
+        {alertMessage}
       </Alert>
     </Snackbar>
   );
