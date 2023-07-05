@@ -21,12 +21,9 @@ export type coin = {
   atl: number;
 };
 
-const redis = new Redis({
-  port: Number(process.env.REDIS_PORT),
-  host: process.env.REDIS_URL,
-  username: process.env.REDIS_USERNAME,
-  password: process.env.REDIS_PASSWORD,
-});
+const redis = new Redis("" + process.env.REDIS_URL);
+console.log(redis.status);
+console.log(process.env.REDIS_URL);
 
 const apiServer = "https://api.coingecko.com/api/v3";
 
