@@ -23,7 +23,6 @@ export type coin = {
 
 const redis = new Redis("" + process.env.REDIS_URL);
 console.log(redis.status);
-console.log(process.env.REDIS_URL);
 
 const apiServer = "https://api.coingecko.com/api/v3";
 
