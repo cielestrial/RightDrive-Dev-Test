@@ -22,7 +22,7 @@ export type coin = {
 };
 
 const redis = new Redis({
-  port: 14019,
+  port: Number(process.env.REDIS_PORT),
   host: process.env.REDIS_URL,
   username: process.env.REDIS_USERNAME,
   password: process.env.REDIS_PASSWORD,
