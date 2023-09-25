@@ -35,29 +35,23 @@ export async function clearCache(
   next: NextFunction
 ) {
   try {
-    let allKeys: [cursor: string, elements: string[]];
-    do {
-      allKeys = await redis.scan("0");
-      console.log(allKeys);
-      if (allKeys[1].length > 0) await redis.del(allKeys[1]);
-    } while (allKeys[0] !== "0");
+    let allKeys = await redis.scan(0);
+    let coinKeys = allKeys[1].filter((key) => key.includes("COIN"));
+    console.log(coinKeys);
 
-    allKeys = await redis.scan(0);
-    console.log(allKeys);
-
-    if (allKeys[1].length === 0) {
-      console.warn("cache cleared");
-      res.status(HttpCode.OK).json({
-        status: HttpCode.OK,
-        message: "cache cleared",
-      });
-    } else {
-      console.warn("cache empty");
-      res.status(HttpCode.OK).json({
-        status: HttpCode.NOT_FOUND,
-        message: "cache empty",
-      });
+    while (coinKeys.length > 0) {
+      await redis.del(coinKeys);
+      console.log(coinKeys);
+      allKeys = await redis.scan(0);
+      coinKeys = allKeys[1].filter((key) => key.includes("COIN"));
     }
+
+    console.log(coinKeys);
+    console.warn("cache cleared");
+    res.status(HttpCode.OK).json({
+      status: HttpCode.OK,
+      message: "cache cleared",
+    });
   } catch (err) {
     handleErrors(err, req, res, next);
   }
