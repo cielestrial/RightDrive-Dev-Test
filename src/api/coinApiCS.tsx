@@ -41,7 +41,7 @@ export type coin = {
 export async function getCoins(
   currency: string,
   dispatch: AppDispatch,
-  retryTimer: React.MutableRefObject<NodeJS.Timer | undefined>,
+  retryTimer: React.MutableRefObject<NodeJS.Timeout | undefined>,
   retryAfter: React.MutableRefObject<number>,
   fromCache: React.MutableRefObject<boolean>
 ) {
@@ -66,7 +66,7 @@ export async function getCoins(
  */
 export function getRetryAfter(
   dispatch: AppDispatch,
-  retryTimer: React.MutableRefObject<NodeJS.Timer | undefined>,
+  retryTimer: React.MutableRefObject<NodeJS.Timeout | undefined>,
   retryAfter: React.MutableRefObject<number>
 ) {
   const retryAfterString = localStorage.getItem("retryAfter");

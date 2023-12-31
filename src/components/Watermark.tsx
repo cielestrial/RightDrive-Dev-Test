@@ -19,12 +19,14 @@ const Watermark = () => {
             color="inherit"
             href="https://www.coingecko.com/en/api"
             target="_blank"
-            rel="noreferrer noopener"
+            rel="noopener"
+            referrerPolicy="strict-origin-when-cross-origin"
           >
             CoinGecko API
           </Link>
         </Typography>
       </Grid2>
+
       <Grid2 xs={12} sm={6} display="flex" justifyContent="center">
         <Typography
           variant="body1"
@@ -37,7 +39,8 @@ const Watermark = () => {
             color="inherit"
             href="https://cielestrial.github.io/"
             target="_blank"
-            rel="noreferrer noopener"
+            rel="noopener author"
+            referrerPolicy="strict-origin-when-cross-origin"
           >
             cielestrial
           </Link>
