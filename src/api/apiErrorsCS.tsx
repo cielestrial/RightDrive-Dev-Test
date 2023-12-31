@@ -65,7 +65,7 @@ export function formatWaitFor(waitFor: number): string {
 export function handleErrors(
   err: responseType,
   dispatch: AppDispatch,
-  retryTimer: React.MutableRefObject<NodeJS.Timer | undefined>,
+  retryTimer: React.MutableRefObject<NodeJS.Timeout | undefined>,
   retryAfter: React.MutableRefObject<number>
 ) {
   if (
@@ -98,7 +98,7 @@ export function handleErrors(
 export function sendAlert(
   message: string,
   dispatch: AppDispatch,
-  retryTimer: React.MutableRefObject<NodeJS.Timer | undefined>,
+  retryTimer: React.MutableRefObject<NodeJS.Timeout | undefined>,
   retryAfter?: React.MutableRefObject<number>
 ) {
   dispatch(myAlertsActions.close());
@@ -115,7 +115,7 @@ export function sendAlert(
  * @param retryAfter time in milliseconds
  */
 export function startRetryAfterTimer(
-  retryTimer: React.MutableRefObject<NodeJS.Timer | undefined>,
+  retryTimer: React.MutableRefObject<NodeJS.Timeout | undefined>,
   retryAfter: React.MutableRefObject<number>
 ) {
   clearInterval(retryTimer.current);

@@ -15,12 +15,12 @@ const port = app.get("port");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", (_, res) => {
   res.send("Hello World!");
 });
 
 // Ping server
-router.get("/ping", (req, res) => {
+router.get("/ping", (_, res) => {
   res.send("pong");
 });
 

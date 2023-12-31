@@ -16,7 +16,7 @@ const Landing = () => {
   const retryAfter = useRef(0);
   const { currency } = useSelector((state: RootState) => state.myCards);
   const dispatch = useAppDispatch();
-  const retryTimer = useRef<NodeJS.Timer>();
+  const retryTimer = useRef<NodeJS.Timeout>();
   const retryCount = useRef(0);
   const fromCache = useRef(true);
 

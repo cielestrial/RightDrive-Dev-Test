@@ -42,7 +42,8 @@ const MyAlert = (props: propsType) => {
           color="inherit"
           href="https://status.coingecko.com"
           target="_blank"
-          rel="noreferrer noopener"
+          rel="noopener"
+          referrerPolicy="strict-origin-when-cross-origin"
         >
           CoinGecko's public API is currently under a DDOS attack.
         </Link>
