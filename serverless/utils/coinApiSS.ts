@@ -21,6 +21,13 @@ export type coin = {
   atl: number;
 };
 
+const apiServer = "https://api.coingecko.com/api/v3";
+let redis: Redis | null = null;
+
+/**
+ * Creates a redis instance/connection.
+ * @returns Redis instance on success, null on failure.
+ */
 async function createRedis() {
   try {
     const redis = new Redis(process.env.REDIS_URL ?? "");
@@ -33,10 +40,6 @@ async function createRedis() {
   }
 }
 
-const redis = await createRedis();
-
-const apiServer = "https://api.coingecko.com/api/v3";
-
 /**
  * Deletes all keys and data in the Redis cache.
  */
@@ -46,6 +49,7 @@ export async function clearCache(
   next: NextFunction
 ) {
   try {
+    if (!redis) redis = await createRedis();
     if (!redis) throw new Error("Redis not connected");
 
     let allKeys = await redis.scan(0);
@@ -89,6 +93,7 @@ export async function getCoins(
   ).getTime();
 
   try {
+    if (!redis) redis = await createRedis();
     const cachedResult = !redis ? null : await redis.get(primaryKey);
 
     if (cachedResult !== null) {
