@@ -21,8 +21,19 @@ export type coin = {
   atl: number;
 };
 
-const redis = new Redis("" + process.env.REDIS_URL);
-console.log(redis.status);
+async function createRedis() {
+  try {
+    const redis = new Redis(process.env.REDIS_URL ?? "");
+    const ping = await redis.ping();
+    console.info("Redis Connection Established:", ping);
+    return redis;
+  } catch (error) {
+    console.error("Error connecting to Redis server");
+    return null;
+  }
+}
+
+const redis = await createRedis();
 
 const apiServer = "https://api.coingecko.com/api/v3";
 
@@ -35,6 +46,8 @@ export async function clearCache(
   next: NextFunction
 ) {
   try {
+    if (!redis) throw new Error("Redis not connected");
+
     let allKeys = await redis.scan(0);
     let coinKeys = allKeys[1].filter((key) => key.includes("COIN"));
     console.log(coinKeys);
@@ -48,10 +61,8 @@ export async function clearCache(
 
     console.log(coinKeys);
     console.warn("cache cleared");
-    res.status(HttpCode.OK).json({
-      status: HttpCode.OK,
-      message: "cache cleared",
-    });
+    const status = HttpCode.OK;
+    res.status(status).json({ status, message: "cache cleared" });
   } catch (err) {
     handleErrors(err, req, res, next);
   }
@@ -78,7 +89,8 @@ export async function getCoins(
   ).getTime();
 
   try {
-    const cachedResult = await redis.get(primaryKey);
+    const cachedResult = !redis ? null : await redis.get(primaryKey);
+
     if (cachedResult !== null) {
       coins = JSON.parse(cachedResult);
       console.log("Data retrieved from Redis cache");
@@ -95,13 +107,12 @@ export async function getCoins(
       coins = result.data as coin[];
       console.log("Data retrieved from CoinGecko api");
       fromCache = false;
-      await redis.set(primaryKey, JSON.stringify(coins), "PXAT", expiryDate);
+
+      if (redis)
+        await redis.set(primaryKey, JSON.stringify(coins), "PXAT", expiryDate);
     }
-    res.status(HttpCode.OK).json({
-      status: HttpCode.OK,
-      fromCache,
-      coins,
-    });
+    const status = HttpCode.OK;
+    res.status(status).json({ status, fromCache, coins });
   } catch (err) {
     handleErrors(err, req, res, next);
   }
