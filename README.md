@@ -1,7 +1,5 @@
 # RightDrive Dev Test
 
-### https://rightdrive-dev-test.netlify.app
-
 ## Specifications
 
 - I was unable to install Material UI 4, so Material UI 5 was used instead.
